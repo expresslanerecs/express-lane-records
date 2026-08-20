@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Express Lane Records</title>
+<style>
+  :root{
+    --black:#0b0b0a;
+    --pine:#0d2b1f;
+    --emerald:#175a3c;
+    --emerald-light:#2c8f61;
+    --beige:#efe8d8;
+    --white:#faf7f0;
+    --gold:#c9a24b;
+    --gold-dim:#9c7f3d;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black);
+    color:var(--beige);
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* grain overlay */
+  .grain{
+    position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:40;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 5vw;
+    background:linear-gradient(to bottom, rgba(11,11,10,.9), transparent);
+  }
+  .wordmark{
+    font-weight:700;letter-spacing:.08em;font-size:15px;
+    text-transform:uppercase;color:var(--white);
+  }
+  nav{display:flex;gap:28px;}
+  nav a{
+    font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--beige);opacity:.75;transition:opacity .2s, color .2s;
+  }
+  nav a:hover{opacity:1;color:var(--gold);}
+
+  .hero{
+    position:relative;
+    min-height:100svh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:0 6vw;
+    overflow:hidden;
+  }
+  /* moving background: animated gradient, always on; a looped video (if present) blends on top */
+  .hero-media{position:absolute;inset:0;z-index:0;overflow:hidden;}
+  .hero-gradient{
+    position:absolute;inset:-10%;
+    background:
+      radial-gradient(ellipse 60% 45% at 50% 20%, rgba(23,90,60,.55), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(201,162,75,.14), transparent 70%);
+    filter:blur(10px);
+    animation:driftGradient 22s ease-in-out infinite alternate;
+  }
+  @keyframes driftGradient{
+    0%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(-3%,2%) scale(1.06);}
+    100%{transform:translate(2%,-3%) scale(1.02);}
+  }
+  .hero-video{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;opacity:.4;mix-blend-mode:screen;
+  }
+  /* keeps hero text legible whether or not a video is present */
+  .hero::after{
+    content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg, rgba(11,11,10,.15), rgba(11,11,10,.8) 88%);
+  }
+  .hero-inner{position:relative;z-index:2;}
+  .catalog-tag{
+    font-size:11px;letter-spacing:.25em;text-transform:uppercase;
+    color:var(--gold);opacity:.9;margin-bottom:22px;
+  }
+  .hero h1{
+    font-size:clamp(42px, 9vw, 108px);
+    font-weight:800;letter-spacing:-.01em;
+    color:var(--white);
+    line-height:.95;
+  }
+  .hero-desc{
+    max-width:480px;margin:26px auto 0;
+    font-size:15px;color:var(--beige);opacity:.7;
+  }
+  .scroll-hint{
+    position:absolute;bottom:38px;left:50%;transform:translateX(-50%);
+    font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--beige);opacity:.4;z-index:2;
+  }
+
+  section{padding:120px 6vw;max-width:1240px;margin:0 auto;}
+  .section-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin-bottom:56px;flex-wrap:wrap;gap:12px;
+    border-bottom:1px solid rgba(239,232,216,.15);
+    padding-bottom:20px;
+  }
+  .section-head h2{
+    font-size:13px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--white);
+  }
+  .section-head span{
+    font-size:12px;color:var(--beige);opacity:.5;
+  }
+
+  /* releases */
+  .releases-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+    gap:34px;
+  }
+  .release-card{
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .release-art{
+    aspect-ratio:1/1;border-radius:2px;
+    position:relative;overflow:hidden;
+    display:flex;align-items:flex-end;padding:14px;
+    transition:transform .35s ease;
+  }
+  .release-card:hover .release-art{transform:scale(1.02);}
+  .release-cat{
+    font-size:11px;letter-spacing:.1em;color:rgba(250,247,240,.85);
+    background:rgba(11,11,10,.35);padding:3px 8px;border-radius:2px;
+  }
+  .release-meta .rel-artist{
+    font-size:14px;font-weight:600;color:var(--white);
+  }
+  .release-meta .rel-title{
+    font-size:13px;color:var(--beige);opacity:.65;margin-top:2px;
+  }
+  .release-links{display:flex;gap:14px;margin-top:4px;}
+  .release-links a{
+    font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--gold);opacity:.8;
+  }
+  .release-links a:hover{opacity:1;}
+
+  /* roster */
+  .roster-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:40px;
+  }
+  .artist-card{
+    border:1px solid rgba(239,232,216,.12);
+    padding:28px 24px;border-radius:2px;
+    transition:border-color .25s;
+  }
+  .artist-card:hover{border-color:rgba(201,162,75,.5);}
+  .artist-name{
+    font-size:20px;font-weight:700;color:var(--white);margin-bottom:8px;
+  }
+  .artist-role{
+    font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--gold);opacity:.85;margin-bottom:14px;
+  }
+  .artist-bio{font-size:13.5px;color:var(--beige);opacity:.65;}
+
+  /* about */
+  .about-text{
+    font-size:clamp(20px,2.6vw,30px);
+    line-height:1.5;color:var(--white);
+    max-width:840px;font-weight:400;
+  }
+  .about-text b{color:var(--gold);font-weight:600;}
+
+  /* connect */
+  .connect-inner{
+    display:flex;flex-wrap:wrap;justify-content:space-between;gap:40px;
+  }
+  .connect-links{display:flex;flex-direction:column;gap:10px;}
+  .connect-links a{
+    font-size:15px;color:var(--beige);opacity:.7;transition:opacity .2s,color .2s;
+  }
+  .connect-links a:hover{opacity:1;color:var(--gold);}
+  .connect-email{font-size:14px;color:var(--gold);opacity:.9;}
+
+  footer{
+    padding:32px 6vw 44px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-size:11px;color:var(--beige);opacity:.4;
+    letter-spacing:.05em;
+  }
+
+  .placeholder-note{
+    display:inline-block;margin-top:10px;font-size:11px;color:var(--beige);
+    opacity:.4;font-style:italic;
+  }
+
+  /* media: gallery photos */
+  .gallery-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+    gap:18px;
+  }
+  .media-slot{
+    aspect-ratio:4/5;position:relative;overflow:hidden;border-radius:2px;
+    background:linear-gradient(155deg,#175a3c,#0b0b0a 70%);
+  }
+  .media-slot img{width:100%;height:100%;object-fit:cover;display:block;}
+  .media-slot.media-missing img{display:none;}
+  .media-slot::after{
+    content:attr(data-label);
+    position:absolute;inset:0;display:none;
+    align-items:center;justify-content:center;text-align:center;padding:14px;
+    font-size:10.5px;letter-spacing:.04em;color:rgba(250,247,240,.55);
+  }
+  .media-slot.media-missing::after{display:flex;}
+
+  /* media: embedded video */
+  .video-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:32px;margin-top:56px;
+  }
+  .video-embed{
+    position:relative;aspect-ratio:16/9;background:#000;
+    border-radius:2px;overflow:hidden;
+  }
+  .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .video-caption{margin-top:10px;font-size:11.5px;color:var(--beige);opacity:.45;}
+
+  @media (max-width:640px){
+    nav{gap:16px;}
+    section{padding:80px 6vw;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header>
+  <div class="wordmark">Express Lane Records</div>
+  <nav>
+    <a href="#releases">Releases</a>
+    <a href="#roster">Roster</a>
+    <a href="#media">Media</a>
+    <a href="#about">About</a>
+    <a href="#connect">Connect</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-media">
+    <div class="hero-gradient"></div>
+    <!-- Drop a short, compressed loop at videos/hero-loop.mp4 and it plays automatically.
+         No file there yet, so only the animated gradient shows — nothing breaks. -->
+    <video class="hero-video" autoplay muted loop playsinline poster="images/hero-poster.jpg">
+      <source src="videos/hero-loop.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-inner">
+    <div class="catalog-tag">EL &middot; House / Electro / Acid &middot; Miami</div>
+    <h1>EXPRESS<br>LANE</h1>
+    <p class="hero-desc">Independent label imprint pressing tech-forward house, electro, and acid from emerging producers.</p>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<section id="releases">
+  <div class="section-head">
+    <h2>Releases</h2>
+    <span>Catalog — most recent first</span>
+  </div>
+  <div class="releases-grid">
+
+    <div class="release-card">
+      <div class="release-art" style="background:linear-gradient(155deg,#175a3c,#0b0b0a 70%);">
+        <span class="release-cat">EL004</span>
+      </div>
+      <div class="release-meta">
+        <div class="rel-artist">Artist Name</div>
+        <div class="rel-title">Track Title — EP</div>
+      </div>
+      <div class="release-links">
+        <a href="#">Beatport</a>
+        <a href="#">Soundcloud</a>
+      </div>
+    </div>
+
+    <div class="release-card">
+      <div class="release-art" style="background:linear-gradient(155deg,#9c7f3d,#0b0b0a 70%);">
+        <span class="release-cat">EL003</span>
+      </div>
+      <div class="release-meta">
+        <div class="rel-artist">Artist Name</div>
+        <div class="rel-title">Track Title</div>
+      </div>
+      <div class="release-links">
+        <a href="#">Beatport</a>
+        <a href="#">Bandcamp</a>
+      </div>
+    </div>
+
+    <div class="release-card">
+      <div class="release-art" style="background:linear-gradient(155deg,#2c8f61,#0d2b1f 70%);">
+        <span class="release-cat">EL002</span>
+      </div>
+      <div class="release-meta">
+        <div class="rel-artist">Artist Name</div>
+        <div class="rel-title">Track Title — Remix</div>
+      </div>
+      <div class="release-links">
+        <a href="#">Beatport</a>
+        <a href="#">Soundcloud</a>
+      </div>
+    </div>
+
+    <div class="release-card">
+      <div class="release-art" style="background:linear-gradient(155deg,#efe8d8,#175a3c 70%);">
+        <span class="release-cat">EL001</span>
+      </div>
+      <div class="release-meta">
+        <div class="rel-artist">Artist Name</div>
+        <div class="rel-title">Track Title — EP</div>
+      </div>
+      <div class="release-links">
+        <a href="#">Beatport</a>
+        <a href="#">Bandcamp</a>
+      </div>
+    </div>
+
+  </div>
+  <div class="placeholder-note">Catalog art, artist names, and titles above are placeholders — swap in real releases and cover art.</div>
+</section>
+
+<section id="roster">
+  <div class="section-head">
+    <h2>Roster</h2>
+    <span>Artists &amp; producers</span>
+  </div>
+  <div class="roster-grid">
+    <div class="artist-card">
+      <div class="artist-name">BRAY</div>
+      <div class="artist-role">Licensed Artist</div>
+      <div class="artist-bio">Bio copy goes here — sound, background, and standout releases.</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-name">Artist Name</div>
+      <div class="artist-role">Label Artist</div>
+      <div class="artist-bio">Bio copy goes here — sound, background, and standout releases.</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-name">Artist Name</div>
+      <div class="artist-role">Label Artist</div>
+      <div class="artist-bio">Bio copy goes here — sound, background, and standout releases.</div>
+    </div>
+  </div>
+</section>
+
+<section id="media">
+  <div class="section-head">
+    <h2>Media</h2>
+    <span>Photos &amp; video</span>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="media-slot" data-label="images/press-1.jpg"><img src="images/press-1.jpg" alt="Press photo 1" data-fallback></div>
+    <div class="media-slot" data-label="images/press-2.jpg"><img src="images/press-2.jpg" alt="Press photo 2" data-fallback></div>
+    <div class="media-slot" data-label="images/press-3.jpg"><img src="images/press-3.jpg" alt="Press photo 3" data-fallback></div>
+    <div class="media-slot" data-label="images/press-4.jpg"><img src="images/press-4.jpg" alt="Press photo 4" data-fallback></div>
+    <div class="media-slot" data-label="images/press-5.jpg"><img src="images/press-5.jpg" alt="Press photo 5" data-fallback></div>
+    <div class="media-slot" data-label="images/press-6.jpg"><img src="images/press-6.jpg" alt="Press photo 6" data-fallback></div>
+  </div>
+  <div class="placeholder-note">Empty slots point at images/press-1.jpg through press-6.jpg — drop files with those names into an /images folder in the repo and they appear automatically. No image yet, no broken-icon — just a blank tile.</div>
+
+  <div class="video-grid">
+    <div>
+      <div class="video-embed">
+        <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Express Lane — set" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="video-caption">YouTube embed — replace VIDEO_ID with the real video's ID (the part after watch?v= in its URL).</div>
+    </div>
+    <div>
+      <div class="video-embed">
+        <iframe src="https://player.vimeo.com/video/VIDEO_ID" title="Express Lane — recap" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="video-caption">Vimeo embed — replace VIDEO_ID the same way.</div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-head">
+    <h2>About</h2>
+    <span>The imprint</span>
+  </div>
+  <p class="about-text">Express Lane Records is an <b>independent label imprint</b> built around electro, acid, house, and other tech-forward sounds — a home for <b>emerging producers</b> whose work doesn't fit the press-safe mold. Alongside releases, the label runs an editorial interview series spotlighting Miami house artists, built on questions that get raw, unexpected answers.</p>
+</section>
+
+<section id="connect">
+  <div class="section-head">
+    <h2>Connect</h2>
+    <span>Follow &amp; reach out</span>
+  </div>
+  <div class="connect-inner">
+    <div class="connect-links">
+      <a href="#">Instagram</a>
+      <a href="#">SoundCloud</a>
+      <a href="#">Beatport</a>
+      <a href="#">Bandcamp</a>
+    </div>
+    <div class="connect-links">
+      <span class="connect-email">demos@expresslanerecords.com</span>
+      <div class="placeholder-note">Links and contact email are placeholders — swap in your real handles.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>&copy; 2026 Express Lane Records</div>
+  <div>Miami</div>
+</footer>
+
+<script>
+  // If a gallery image file doesn't exist yet, show a labeled placeholder
+  // tile instead of a browser broken-image icon.
+  document.querySelectorAll('img[data-fallback]').forEach(function(img){
+    img.addEventListener('error', function(){
+      var slot = img.closest('.media-slot');
+      if (slot) slot.classList.add('media-missing');
+    });
+  });
+</script>
+
+</body>
+</html>
