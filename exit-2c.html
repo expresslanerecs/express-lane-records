@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exit 2C</title>
+<style>
+  :root{
+    --black:#0b0b0a;
+    --pine:#2b0d24;
+    --emerald:#a3195b;
+    --emerald-light:#e0449b;
+    --beige:#efe8d8;
+    --white:#faf7f0;
+    --gold:#ff6ec7;
+    --gold-dim:#cc4fa0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black);
+    color:var(--beige);
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* grain overlay */
+  .grain{
+    position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:40;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 5vw;
+    background:linear-gradient(to bottom, rgba(11,11,10,.9), transparent);
+  }
+  .wordmark{
+    font-weight:700;letter-spacing:.08em;font-size:15px;
+    text-transform:uppercase;color:var(--white);
+  }
+  .wordmark-logo{height:56px;width:auto;display:block;}
+  .header-right{display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
+  nav{display:flex;gap:28px;flex-wrap:wrap;}
+  nav a{
+    font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--beige);opacity:.75;transition:opacity .2s, color .2s;
+  }
+  nav a:hover{opacity:1;color:var(--gold);}
+  .brand-btn{
+    border:1px solid var(--gold);color:var(--gold);
+    padding:8px 18px;border-radius:999px;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    transition:background .2s,color .2s;white-space:nowrap;
+  }
+  .brand-btn:hover{background:var(--gold);color:var(--black);}
+
+  .hero{
+    position:relative;
+    min-height:100svh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:0 6vw;
+    overflow:hidden;
+  }
+  /* moving background: animated gradient, always on; a looped video (if present) blends on top */
+  .hero-media{position:absolute;inset:0;z-index:0;overflow:hidden;}
+  .hero-gradient{
+    position:absolute;inset:-10%;
+    background:
+      radial-gradient(ellipse 60% 45% at 50% 20%, rgba(163,25,91,.55), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(255,110,199,.18), transparent 70%);
+    filter:blur(10px);
+    animation:driftGradient 22s ease-in-out infinite alternate;
+  }
+  @keyframes driftGradient{
+    0%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(-3%,2%) scale(1.06);}
+    100%{transform:translate(2%,-3%) scale(1.02);}
+  }
+  .hero-video{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;opacity:.4;mix-blend-mode:screen;
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg, rgba(11,11,10,.15), rgba(11,11,10,.8) 88%);
+  }
+  .hero-inner{position:relative;z-index:2;}
+  .hero h1{
+    font-size:clamp(42px, 9vw, 108px);
+    font-weight:800;letter-spacing:-.01em;
+    color:var(--white);
+    line-height:.95;
+  }
+  .hero-desc{
+    max-width:480px;margin:26px auto 0;
+    font-size:15px;color:var(--beige);opacity:.7;
+  }
+  .scroll-hint{
+    position:absolute;bottom:38px;left:50%;transform:translateX(-50%);
+    font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--beige);opacity:.4;z-index:2;
+  }
+
+  section{padding:120px 6vw;max-width:1240px;margin:0 auto;}
+  .section-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin-bottom:56px;flex-wrap:wrap;gap:12px;
+    border-bottom:1px solid rgba(239,232,216,.15);
+    padding-bottom:20px;
+  }
+  .section-head h2{
+    font-size:13px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--white);
+  }
+  .section-head span{
+    font-size:12px;color:var(--beige);opacity:.5;
+  }
+
+  /* roster (DJs) */
+  .roster-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:40px;
+  }
+  .artist-card{
+    border:1px solid rgba(239,232,216,.12);
+    padding:28px 24px;border-radius:2px;
+    transition:border-color .25s;
+  }
+  .artist-card:hover{border-color:rgba(255,110,199,.5);}
+  .artist-photo{
+    aspect-ratio:1/1;border-radius:2px;position:relative;overflow:hidden;
+    background:linear-gradient(155deg,#a3195b,#0b0b0a 70%);
+    margin-bottom:16px;
+  }
+  .artist-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+  .artist-photo.media-missing img{display:none;}
+  .artist-photo::after{
+    content:attr(data-label);
+    position:absolute;inset:0;display:none;
+    align-items:center;justify-content:center;text-align:center;padding:10px;
+    font-size:9.5px;letter-spacing:.04em;color:rgba(250,247,240,.5);
+  }
+  .artist-photo.media-missing::after{display:flex;}
+  .artist-name{
+    font-size:20px;font-weight:700;color:var(--white);margin-bottom:4px;
+  }
+  .artist-bio{font-size:13.5px;color:var(--beige);opacity:.65;}
+
+  /* about */
+  .about-text{
+    font-size:clamp(16px,1.5vw,19px);
+    line-height:1.75;color:var(--white);
+    max-width:720px;font-weight:400;
+    margin-bottom:26px;
+  }
+  .about-text:last-of-type{margin-bottom:0;}
+  .about-text b{color:var(--gold);font-weight:600;}
+  .about-text a{color:var(--gold);font-weight:600;}
+  .about-text a:hover{opacity:.8;}
+
+  /* tickets */
+  .tickets-inner{
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:28px;
+  }
+  .tickets-text{
+    font-size:16px;color:var(--beige);opacity:.75;max-width:480px;
+  }
+  .ticket-btn{
+    display:inline-block;
+    background:var(--gold);color:var(--pine);
+    font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    padding:16px 32px;border-radius:2px;
+    transition:opacity .2s, transform .2s;
+    white-space:nowrap;
+  }
+  .ticket-btn:hover{opacity:.85;transform:translateY(-1px);}
+
+  /* connect */
+  .connect-inner{
+    display:flex;flex-wrap:wrap;justify-content:space-between;gap:40px;
+  }
+  .connect-links{display:flex;flex-direction:column;gap:10px;}
+  .connect-links a{
+    font-size:15px;color:var(--beige);opacity:.7;transition:opacity .2s,color .2s;
+  }
+  .connect-links a:hover{opacity:1;color:var(--gold);}
+  .connect-email{font-size:14px;color:var(--gold);opacity:.9;}
+
+  footer{
+    padding:32px 6vw 44px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-size:11px;color:var(--beige);opacity:.4;
+    letter-spacing:.05em;
+  }
+
+  .placeholder-note{
+    display:inline-block;margin-top:10px;font-size:11px;color:var(--beige);
+    opacity:.4;font-style:italic;
+  }
+
+  /* media: gallery photos */
+  .gallery-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+    gap:18px;
+  }
+  .media-slot{
+    aspect-ratio:4/5;position:relative;overflow:hidden;border-radius:2px;
+    background:linear-gradient(155deg,#a3195b,#0b0b0a 70%);
+  }
+  .media-slot img{width:100%;height:100%;object-fit:cover;display:block;}
+  .media-slot.media-missing img{display:none;}
+  .media-slot::after{
+    content:attr(data-label);
+    position:absolute;inset:0;display:none;
+    align-items:center;justify-content:center;text-align:center;padding:14px;
+    font-size:10.5px;letter-spacing:.04em;color:rgba(250,247,240,.55);
+  }
+  .media-slot.media-missing::after{display:flex;}
+
+  /* media: embedded video */
+  .video-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:32px;margin-top:56px;
+  }
+  .video-embed{
+    position:relative;aspect-ratio:16/9;background:#000;
+    border-radius:2px;overflow:hidden;
+  }
+  .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .video-caption{margin-top:10px;font-size:11.5px;color:var(--beige);opacity:.45;}
+
+  /* media: self-hosted video clips (not embedded from YouTube/Vimeo) */
+  .clip-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:28px;margin-top:56px;
+  }
+  .clip-slot{
+    aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:2px;
+    background:linear-gradient(155deg,#a3195b,#0b0b0a 70%);
+  }
+  .clip-slot video{width:100%;height:100%;object-fit:cover;display:block;}
+  .clip-slot.media-missing video{display:none;}
+  .clip-slot::after{
+    content:attr(data-label);
+    position:absolute;inset:0;display:none;
+    align-items:center;justify-content:center;text-align:center;padding:14px;
+    font-size:10.5px;letter-spacing:.04em;color:rgba(250,247,240,.55);
+  }
+  .clip-slot.media-missing::after{display:flex;}
+
+  @media (max-width:640px){
+    nav{gap:16px;}
+    section{padding:80px 6vw;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header>
+  <a href="#" class="wordmark"><img class="wordmark-logo" src="images/logo-e2c-trans.png" alt="Exit 2C"></a>
+  <div class="header-right">
+    <nav>
+      <a href="#gallery">Gallery</a>
+      <a href="#roster">DJs</a>
+      <a href="#about">About</a>
+      <a href="#tickets">Tickets</a>
+      <a href="#connect">Connect</a>
+    </nav>
+    <a class="brand-btn" href="index.html">Express Lane Records</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-media">
+    <div class="hero-gradient"></div>
+  </div>
+  <div class="hero-inner">
+    <h1>EXIT 2C</h1>
+    <p class="hero-desc">Your last exit before the party.</p>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<section id="gallery">
+  <div class="section-head">
+    <h2>Gallery</h2>
+    <span>Photos &amp; video</span>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="media-slot" data-label="images/crowd-1.jpg"><img src="images/crowd-1.jpg" alt="Exit 2C crowd 1" data-fallback></div>
+    <div class="media-slot" data-label="images/crowd-2.jpg"><img src="images/crowd-2.jpg" alt="Exit 2C crowd 2" data-fallback></div>
+    <div class="media-slot" data-label="images/crowd-3.jpg"><img src="images/crowd-3.jpg" alt="Exit 2C crowd 3" data-fallback></div>
+    <div class="media-slot" data-label="images/crowd-4.jpg"><img src="images/crowd-4.jpg" alt="Exit 2C crowd 4" data-fallback></div>
+    <div class="media-slot" data-label="images/crowd-5.jpg"><img src="images/crowd-5.jpg" alt="Exit 2C crowd 5" data-fallback></div>
+    <div class="media-slot" data-label="images/crowd-6.jpg"><img src="images/crowd-6.jpg" alt="Exit 2C crowd 6" data-fallback></div>
+    <div class="media-slot" data-label="images/crowd-7.jpg"><img src="images/crowd-7.jpg" alt="Exit 2C crowd 7" data-fallback></div>
+    <div class="media-slot" data-label="images/crowd-8.jpg"><img src="images/crowd-8.jpg" alt="Exit 2C crowd 8" data-fallback></div>
+  </div>
+
+  <div class="clip-grid">
+    <div class="clip-slot" data-label="videos/recap-euphoric2c.mp4">
+      <video controls preload="metadata" poster="images/recap-euphoric2c-poster.jpg" data-fallback>
+        <source src="videos/recap-euphoric2c.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="clip-slot" data-label="videos/recap-mmw.mp4">
+      <video controls preload="metadata" poster="images/recap-mmw-poster.jpg" data-fallback>
+        <source src="videos/recap-mmw.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+  <div class="placeholder-note">Self-hosted recap clips — drop compressed mp4 files named videos/recap-euphoric2c.mp4 and videos/recap-mmw.mp4 in and they play directly, with playback controls, right on the page.</div>
+</section>
+
+<section id="roster">
+  <div class="section-head">
+    <h2>DJs</h2>
+    <span>Who's played Exit 2C</span>
+  </div>
+  <div class="roster-grid">
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-merch.jpg"><img src="images/id-merch.jpg" alt="M3RCH" data-fallback></div>
+      <div class="artist-name">M3RCH</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-vega.jpg"><img src="images/id-vega.jpg" alt="Vega" data-fallback></div>
+      <div class="artist-name">Vega</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-marco.jpg"><img src="images/id-marco.jpg" alt="Marco Consonni" data-fallback></div>
+      <div class="artist-name">Marco Consonni</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-lance.jpg"><img src="images/id-lance.jpg" alt="LANCE REGO" data-fallback></div>
+      <div class="artist-name">LANCE REGO</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-guskoza.jpg"><img src="images/id-guskoza.jpg" alt="Gus Koza" data-fallback></div>
+      <div class="artist-name">Gus Koza</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-colin.jpg"><img src="images/id-colin.jpg" alt="Colin Push" data-fallback></div>
+      <div class="artist-name">Colin Push</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-jov3-2c.jpg"><img src="images/id-jov3-2c.jpg" alt="JOV3" data-fallback></div>
+      <div class="artist-name">JOV3</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-smalls.jpg"><img src="images/id-smalls.jpg" alt="SMALLS" data-fallback></div>
+      <div class="artist-name">SMALLS</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-da$on.jpg"><img src="images/id-da$on.jpg" alt="DA$ON" data-fallback></div>
+      <div class="artist-name">DA$ON</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-edgy.jpg"><img src="images/id-edgy.jpg" alt="TheRealEdgy" data-fallback></div>
+      <div class="artist-name">TheRealEdgy</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-sb.jpg"><img src="images/id-sb.jpg" alt="SERON &amp; Body" data-fallback></div>
+      <div class="artist-name">SERON &amp; Body</div>
+    </div>
+  </div>
+  <div class="placeholder-note">Photos load from the filenames above — drop matching files into the /images folder and each tile fills in automatically.</div>
+</section>
+
+<section id="about">
+  <div class="section-head">
+    <h2>About</h2>
+    <span>The brand</span>
+  </div>
+  <p class="about-text">Exit 2C was born from the underground dance floors of Miami, named after the real exit that takes you to Miami Ave, downtown. The spot where some of the city's <b>rawest, most electric nights</b> take shape.</p>
+  <p class="about-text">First formed on Twitter as a method to break the ice within the existing house music scene, Exit 2C <b>grew into a community</b>. Friends of friends meeting and pursuing relationships outside of the entity which brought them together.</p>
+  <p class="about-text">What started as a group of friends chasing self expression grew into a place where people feel welcome and <b>build real connection</b> &mdash; a home for the sound we love.</p>
+  <p class="about-text">Today, Exit 2C is our events brand: the parties, the nights out, the dance floors where Miami's underground scene comes alive. Our music lives under <a href="index.html">Express Lane Records</a>, the label side of what we do where we release tracks from the artists we believe in. Together, they're two halves of the same mission: <b>give upcoming producers and DJs a real platform</b>, and keep the sound moving forward.</p>
+  <p class="about-text">We're not trying to be the best. We're building <b>genuine community</b> for the artists still on their way up, and for the people who show up every time just to move. If you've never been, welcome to Exit 2C. Your last exit before the party.</p>
+</section>
+
+<section id="tickets">
+  <div class="section-head">
+    <h2>Tickets</h2>
+    <span>Get in the room</span>
+  </div>
+  <div class="tickets-inner">
+    <p class="tickets-text">All Exit 2C events are ticketed through Shotgun — find upcoming dates and grab tickets there.</p>
+    <a class="ticket-btn" href="https://shotgun.live/en/venues/exit2c" target="_blank" rel="noopener">Get Tickets on Shotgun</a>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="section-head">
+    <h2>Connect</h2>
+    <span>Follow &amp; reach out</span>
+  </div>
+  <div class="connect-inner">
+    <div class="connect-links">
+      <a href="https://www.instagram.com/exit_2c/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@exit_2c" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://x.com/exit_2c" target="_blank" rel="noopener">Twitter</a>
+    </div>
+    <div class="connect-links">
+      <span class="connect-email">expresslanerecs@gmail.com</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>&copy; 2026 Exit 2C</div>
+  <div>Miami</div>
+</footer>
+
+<script>
+  document.querySelectorAll('img[data-fallback]').forEach(function(img){
+    img.addEventListener('error', function(){
+      var slot = img.closest('.media-slot, .artist-photo');
+      if (slot) slot.classList.add('media-missing');
+    });
+  });
+  document.querySelectorAll('video[data-fallback]').forEach(function(vid){
+    var settled = false;
+    function markMissing(){
+      if (settled) return;
+      settled = true;
+      var slot = vid.closest('.clip-slot');
+      if (slot) slot.classList.add('media-missing');
+    }
+    vid.addEventListener('loadedmetadata', function(){ settled = true; });
+    vid.addEventListener('error', markMissing);
+    setTimeout(function(){
+      if (!settled && vid.readyState === 0) markMissing();
+    }, 1200);
+  });
+</script>
+
+</body>
+</html>
