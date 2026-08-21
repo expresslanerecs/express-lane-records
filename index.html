@@ -116,6 +116,7 @@
     max-width:480px;margin:26px auto 0;
     font-size:15px;color:var(--beige);opacity:.7;
   }
+  .hero-desc b{color:var(--gold);font-weight:600;opacity:1;}
   .scroll-hint{
     position:absolute;bottom:38px;left:50%;transform:translateX(-50%);
     font-size:11px;letter-spacing:.2em;text-transform:uppercase;
@@ -142,7 +143,8 @@
     display:flex;flex-direction:column;gap:14px;
     width:100%;
   }
-  .trackstack-wrap{margin-top:8px;text-align:center;}
+  .flat-carousel .release-card{flex:0 0 clamp(220px,28vw,280px);width:auto;}
+  .trackstack-wrap{margin-top:48px;text-align:center;}
   .trackstack-btn{
     display:inline-block;
     border:1px solid var(--gold);color:var(--gold);
@@ -178,28 +180,25 @@
   .release-meta .rel-title{
     font-size:13px;color:var(--beige);opacity:.65;margin-top:2px;
   }
-  .release-links{display:flex;justify-content:space-between;gap:8px;margin-top:4px;}
-  .release-links .grp{display:flex;gap:14px;}
+  .release-links{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-top:4px;}
   .release-links a{
     font-size:10px;letter-spacing:.1em;text-transform:uppercase;
     color:var(--gold);opacity:.8;white-space:nowrap;
   }
   .release-links a:hover{opacity:1;}
+  .release-links a:nth-child(odd){text-align:left;}
+  .release-links a:nth-child(even){text-align:right;}
 
-  /* shared 3D ring carousel */
-  .ring-carousel{position:relative;padding:6px 54px 22px;}
-  .ring-stage{perspective:1300px;position:relative;height:var(--ring-h,380px);}
-  .ring{
-    position:absolute;inset:0;transform-style:preserve-3d;
-    transition:transform .6s cubic-bezier(.22,.68,0,1);
-    cursor:grab;touch-action:pan-y;
+  /* shared flat scroll-snap carousel */
+  .flat-carousel-wrap{position:relative;padding:6px 54px 6px;}
+  .flat-carousel{
+    display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;padding-bottom:6px;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
   }
-  .ring:active{cursor:grabbing;}
-  .ring-item{
-    position:absolute;top:50%;left:50%;width:var(--ring-item-w,220px);
-    backface-visibility:hidden;-webkit-backface-visibility:hidden;
-  }
-  .ring-arrow{
+  .flat-carousel::-webkit-scrollbar{display:none;}
+  .flat-carousel > *{flex:0 0 auto;scroll-snap-align:start;}
+  .flat-arrow{
     position:absolute;top:50%;transform:translateY(-50%);
     width:40px;height:40px;border-radius:999px;border:none;
     background:rgba(11,11,10,.72);border:1px solid rgba(239,232,216,.25);
@@ -207,13 +206,18 @@
     display:flex;align-items:center;justify-content:center;
     transition:background .2s,border-color .2s;z-index:5;
   }
-  .ring-arrow:hover{background:rgba(11,11,10,.92);border-color:var(--gold);}
-  .ring-arrow.prev{left:0;}
-  .ring-arrow.next{right:0;}
+  .flat-arrow:hover{background:rgba(11,11,10,.92);border-color:var(--gold);}
+  .flat-arrow.prev{left:0;}
+  .flat-arrow.next{right:0;}
   @media (max-width:820px){
-    .ring-arrow{display:none;}
-    .ring-carousel{padding:6px 6px 18px;}
+    .flat-arrow{display:none;}
+    .flat-carousel-wrap{padding:6px 0;}
   }
+
+  /* shared 3-column grid */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  @media (max-width:820px){.grid-3{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:480px){.grid-3{grid-template-columns:1fr;}}
 
   /* roster */
   .artist-card{
@@ -367,239 +371,9 @@
   </div>
   <div class="hero-inner">
     <img class="hero-logo" src="images/logo-elr.png" alt="Express Lane Records">
-    <p class="hero-desc">Born from the underground dance floors of Miami, created to shine a light on developing artists everywhere.</p>
+    <p class="hero-desc"><b>Born from the underground dance floors of Miami, created to shine a light on developing artists everywhere.</b></p>
   </div>
   <div class="scroll-hint">Scroll</div>
-</section>
-
-<section id="releases">
-  <div class="section-head">
-    <h2>Releases</h2>
-    <span>Catalog — most recent first</span>
-  </div>
-  <div class="ring-carousel" style="--ring-h:400px;--ring-item-w:clamp(190px,26vw,250px);">
-  <button class="ring-arrow prev" aria-label="Previous release">&#8249;</button>
-  <div class="ring-stage"><div class="ring">
-
-    <div class="ring-item"><div class="release-card">
-      <div class="release-art" data-label="images/EXIT001-cover.jpg">
-        <img src="images/EXIT001-cover.jpg" alt="EXIT001 cover art" data-fallback>
-        <span class="release-cat">EXIT001 - VA</span>
-      </div>
-      <div class="release-meta">
-        <div class="rel-artist">Various Artists</div>
-        <div class="rel-title">All Gas No Brakes — VA</div>
-      </div>
-      <div class="release-links">
-        <span class="grp">
-          <a href="https://open.spotify.com/album/1n3StqeTf4cG5V61G4RkqT?si=d5BaxNuRRAqA_VfVvBRYRg" target="_blank" rel="noopener">Spotify</a>
-          <a href="https://on.soundcloud.com/79c0ePql4gfK3N8BB0" target="_blank" rel="noopener">SoundCloud</a>
-        </span>
-        <span class="grp">
-          <a href="https://music.apple.com/us/album/all-gas-no-brakes/1885770978?at=1000lHKX&ct=linktree_http&itscg=30200&itsct=lt_m" target="_blank" rel="noopener">Apple Music</a>
-          <a href="https://www.beatport.com/release/all-gas-no-brakes/6468908" target="_blank" rel="noopener">Beatport</a>
-        </span>
-      </div>
-    </div></div>
-
-    <div class="ring-item"><div class="release-card">
-      <div class="release-art" data-label="images/EXIT002-cover.jpg">
-        <img src="images/EXIT002-cover.jpg" alt="EXIT002 cover art" data-fallback>
-        <span class="release-cat">EXIT002 - JOV3</span>
-      </div>
-      <div class="release-meta">
-        <div class="rel-artist">JOV3</div>
-        <div class="rel-title">Lost In Sound — EP</div>
-      </div>
-      <div class="release-links">
-        <span class="grp">
-          <a href="https://open.spotify.com/album/3nJvC6YB58TQM3eJctc77D?si=4j4QQ1mXRbW4dd0cLCJEXw" target="_blank" rel="noopener">Spotify</a>
-          <a href="https://on.soundcloud.com/DdTCJ0DuQWmULv4YrR" target="_blank" rel="noopener">SoundCloud</a>
-        </span>
-        <span class="grp">
-          <a href="https://geo.music.apple.com/us/album/_/6769700138?app=music&at=1000lHKX&ct=linktree_http&itscg=30200&itsct=lt_m&ls=1&mt=1" target="_blank" rel="noopener">Apple Music</a>
-          <a href="https://www.beatport.com/release/lost-in-sound/6940984" target="_blank" rel="noopener">Beatport</a>
-        </span>
-      </div>
-    </div></div>
-
-    <div class="ring-item"><div class="release-card">
-      <div class="release-art" data-label="images/EXIT003-cover.jpg">
-        <img src="images/EXIT003-cover.jpg" alt="EXIT003 cover art" data-fallback>
-        <span class="release-cat">EXIT003 - BRAY</span>
-      </div>
-      <div class="release-meta">
-        <div class="rel-artist">BRAY</div>
-        <div class="rel-title">Synth Child — EP</div>
-      </div>
-      <div class="release-links">
-        <span class="grp">
-          <a href="https://open.spotify.com/album/2mzyeB8nUIbeQ6G7iLyKfz?si=CcheDbpORiu7bn3vD1ELRQ" target="_blank" rel="noopener">Spotify</a>
-          <a href="https://on.soundcloud.com/YjCdwq0n5U0RYHPDxP" target="_blank" rel="noopener">SoundCloud</a>
-        </span>
-        <span class="grp">
-          <a href="https://geo.music.apple.com/us/album/_/6784249101?app=music&at=1000lHKX&ct=linktree_http&itscg=30200&itsct=lt_m&ls=1&mt=1" target="_blank" rel="noopener">Apple Music</a>
-          <a href="https://www.beatport.com/release/synth-child/7126205" target="_blank" rel="noopener">Beatport</a>
-        </span>
-      </div>
-    </div></div>
-
-    <div class="ring-item"><div class="release-card">
-      <div class="release-art" data-label="images/EXIT004-cover.jpg">
-        <img src="images/EXIT004-cover.jpg" alt="EXIT004 cover art" data-fallback>
-        <span class="release-cat">EXIT004 - EMIDE BR</span>
-      </div>
-      <div class="release-meta">
-        <div class="rel-artist">EMIDE BR</div>
-        <div class="rel-title">Vendetta — EP</div>
-      </div>
-      <div class="release-links">
-        <span class="grp">
-          <a href="https://open.spotify.com/album/1WZPMdvA7nmLLqcDKoUa0p?si=fYhtxjm5R_GbMtazMNOfeA" target="_blank" rel="noopener">Spotify</a>
-          <a href="https://on.soundcloud.com/QlewhWd5xhiaKffixy" target="_blank" rel="noopener">SoundCloud</a>
-        </span>
-        <span class="grp">
-          <a href="https://geo.music.apple.com/us/album/_/6792672537?app=music&at=1000lHKX&ct=linktree_http&itscg=30200&itsct=lt_m&ls=1&mt=1" target="_blank" rel="noopener">Apple Music</a>
-          <a href="https://www.beatport.com/release/vendetta/7227835" target="_blank" rel="noopener">Beatport</a>
-        </span>
-      </div>
-    </div></div>
-
-    <div class="ring-item"><div class="release-card">
-      <div class="release-art" data-label="images/EXIT005-cover.jpg">
-        <img src="images/EXIT005-cover.jpg" alt="EXIT005 cover art" data-fallback>
-        <span class="release-cat">EXIT005 - VEGA &amp; JONNY (US)</span>
-      </div>
-      <div class="release-meta">
-        <div class="rel-artist">Vega &amp; Jonny (US)</div>
-        <div class="rel-title">We Are Borg — Single</div>
-      </div>
-      <div class="release-links">
-        <span class="grp">
-          <a href="https://open.spotify.com/track/1H83QPdKt5K46RH2Hz3xZx?si=8c11c93323fa4ad7" target="_blank" rel="noopener">Spotify</a>
-          <a href="https://on.soundcloud.com/HJ3Qvrordkm1b8bptW" target="_blank" rel="noopener">SoundCloud</a>
-        </span>
-        <span class="grp">
-          <a href="https://music.apple.com/us/album/we-are-borg-single/6798245535" target="_blank" rel="noopener">Apple Music</a>
-          <a href="https://www.beatport.com/release/we-are-borg-directors-cut/7314641" target="_blank" rel="noopener">Beatport</a>
-        </span>
-      </div>
-    </div></div>
-
-    <div class="ring-item"><div class="release-card">
-      <div class="release-art" data-label="images/EXIT006-cover.jpg">
-        <img src="images/EXIT006-cover.jpg" alt="EXIT006 cover art" data-fallback>
-        <span class="release-cat">EXIT006 - JORDN</span>
-      </div>
-      <div class="release-meta">
-        <div class="rel-artist">Jordn</div>
-        <div class="rel-title">Still Rollin — Single</div>
-      </div>
-    </div></div>
-
-  </div></div>
-  <button class="ring-arrow next" aria-label="Next release">&#8250;</button>
-  </div>
-  <div class="trackstack-wrap">
-    <a class="trackstack-btn" href="https://tstack.app/express-lane-records" target="_blank" rel="noopener">Browse the Full Catalog on Track Stack</a>
-  </div>
-</section>
-
-<section id="roster">
-  <div class="section-head">
-    <h2>Roster</h2>
-    <span>Artists &amp; producers</span>
-  </div>
-  <div class="ring-carousel" style="--ring-h:280px;--ring-item-w:clamp(140px,20vw,190px);">
-  <button class="ring-arrow prev" aria-label="Previous artist">&#8249;</button>
-  <div class="ring-stage"><div class="ring">
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-gustav.jpg"><img src="images/id-gustav.jpg" alt="Gustav (BR)" data-fallback></div>
-      <div class="artist-name">Gustav (BR)</div>
-      <div class="artist-location">Santa Catarina, Brasil</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-colin.jpg"><img src="images/id-colin.jpg" alt="Colin Push" data-fallback></div>
-      <div class="artist-name">Colin Push</div>
-      <div class="artist-location">Chicago, IL, USA</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-vega.jpg"><img src="images/id-vega.jpg" alt="Vega" data-fallback></div>
-      <div class="artist-name">Vega</div>
-      <div class="artist-location">Miami, FL, USA</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-guskoza.jpg"><img src="images/id-guskoza.jpg" alt="Gus Koza" data-fallback></div>
-      <div class="artist-name">Gus Koza</div>
-      <div class="artist-location">Detroit, MI, USA</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-soar.jpg"><img src="images/id-soar.jpg" alt="SOAR" data-fallback></div>
-      <div class="artist-name">SOAR</div>
-      <div class="artist-location">Houston, TX, USA</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-lance.jpg"><img src="images/id-lance.jpg" alt="LANCE REGO" data-fallback></div>
-      <div class="artist-name">LANCE REGO</div>
-      <div class="artist-location">Boston, MA, USA</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-duko.jpg"><img src="images/id-duko.jpg" alt="DUKO (US)" data-fallback></div>
-      <div class="artist-name">DUKO (US)</div>
-      <div class="artist-location">Fort Lauderdale, FL, USA</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-jonny.jpg"><img src="images/id-jonny.jpg" alt="Jonny (US)" data-fallback></div>
-      <div class="artist-name">Jonny (US)</div>
-      <div class="artist-location">Miami, FL, USA</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-jov3.jpg"><img src="images/id-jov3.jpg" alt="JOV3" data-fallback></div>
-      <div class="artist-name">JOV3</div>
-      <div class="artist-location">Miami, FL, USA</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-bray.jpg"><img src="images/id-bray.jpg" alt="BRAY" data-fallback></div>
-      <div class="artist-name">BRAY</div>
-      <div class="artist-location">Phoenix, AZ, USA</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-emide.jpg"><img src="images/id-emide.jpg" alt="EMIDE BR" data-fallback></div>
-      <div class="artist-name">EMIDE BR</div>
-      <div class="artist-location">Santa Catarina, Brasil</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-jordn.jpg"><img src="images/id-jordn.jpg" alt="Jordn" data-fallback></div>
-      <div class="artist-name">Jordn</div>
-      <div class="artist-location">Austin, TX, USA</div>
-    </div></div>
-
-  </div></div>
-  <button class="ring-arrow next" aria-label="Next artist">&#8250;</button>
-  </div>
-
-</section>
-
-<section id="about">
-  <div class="section-head">
-    <h2>About</h2>
-    <span>The imprint</span>
-  </div>
-  <p class="about-text">Express Lane Records was created out of an <b>abundance of passion</b> to share, built because we wanted to contribute to the music we were championing on the dance floor, and our songs needed a home of their own.</p>
-  <p class="about-text">What started as a way to formalize the sounds we loved, and continue to build upon, became a <b>real platform for producers and DJs</b>, founded on a belief in lifting others up the same way we have been. Not a vanity imprint, a <b>launchpad</b>.</p>
-  <p class="about-text">Together with events brand <a href="exit-2c.html">Exit 2C</a>, they're two halves of the same mission: shine a light on <b>local talent</b> and <b>keep the sound moving forward</b>.</p>
 </section>
 
 <section id="connect">
@@ -621,64 +395,219 @@
   </div>
 </section>
 
+<section id="roster">
+  <div class="section-head">
+    <h2>Roster</h2>
+    <span>Artists &amp; producers</span>
+  </div>
+  <div class="grid-3">
+
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-gustav.jpg"><img src="images/id-gustav.jpg" alt="Gustav (BR)" data-fallback></div>
+      <div class="artist-name">Gustav (BR)</div>
+      <div class="artist-location">Santa Catarina, Brasil</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-colin.jpg"><img src="images/id-colin.jpg" alt="Colin Push" data-fallback></div>
+      <div class="artist-name">Colin Push</div>
+      <div class="artist-location">Chicago, IL, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-vega.jpg"><img src="images/id-vega.jpg" alt="Vega" data-fallback></div>
+      <div class="artist-name">Vega</div>
+      <div class="artist-location">Miami, FL, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-guskoza.jpg"><img src="images/id-guskoza.jpg" alt="Gus Koza" data-fallback></div>
+      <div class="artist-name">Gus Koza</div>
+      <div class="artist-location">Detroit, MI, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-soar.jpg"><img src="images/id-soar.jpg" alt="SOAR" data-fallback></div>
+      <div class="artist-name">SOAR</div>
+      <div class="artist-location">Houston, TX, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-lance.jpg"><img src="images/id-lance.jpg" alt="LANCE REGO" data-fallback></div>
+      <div class="artist-name">LANCE REGO</div>
+      <div class="artist-location">Boston, MA, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-duko.jpg"><img src="images/id-duko.jpg" alt="DUKO (US)" data-fallback></div>
+      <div class="artist-name">DUKO (US)</div>
+      <div class="artist-location">Fort Lauderdale, FL, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-jonny.jpg"><img src="images/id-jonny.jpg" alt="Jonny (US)" data-fallback></div>
+      <div class="artist-name">Jonny (US)</div>
+      <div class="artist-location">Miami, FL, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-jov3.jpg"><img src="images/id-jov3.jpg" alt="JOV3" data-fallback></div>
+      <div class="artist-name">JOV3</div>
+      <div class="artist-location">Miami, FL, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-bray.jpg"><img src="images/id-bray.jpg" alt="BRAY" data-fallback></div>
+      <div class="artist-name">BRAY</div>
+      <div class="artist-location">Phoenix, AZ, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-emide.jpg"><img src="images/id-emide.jpg" alt="EMIDE BR" data-fallback></div>
+      <div class="artist-name">EMIDE BR</div>
+      <div class="artist-location">Santa Catarina, Brasil</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-jordn.jpg"><img src="images/id-jordn.jpg" alt="Jordn" data-fallback></div>
+      <div class="artist-name">Jordn</div>
+      <div class="artist-location">Austin, TX, USA</div>
+    </div>
+
+  </div>
+</section>
+
+<section id="releases">
+  <div class="section-head">
+    <h2>Releases</h2>
+    <span>Catalog — most recent first</span>
+  </div>
+  <div class="flat-carousel-wrap">
+  <button class="flat-arrow prev" aria-label="Previous release">&#8249;</button>
+  <div class="flat-carousel">
+
+    <div class="release-card">
+      <div class="release-art" data-label="images/EXIT001-cover.jpg">
+        <img src="images/EXIT001-cover.jpg" alt="EXIT001 cover art" data-fallback>
+        <span class="release-cat">EXIT001 - VA</span>
+      </div>
+      <div class="release-meta">
+        <div class="rel-artist">Various Artists - EXIT001</div>
+        <div class="rel-title">All Gas No Brakes — VA</div>
+      </div>
+      <div class="release-links">
+        <a href="https://www.beatport.com/release/all-gas-no-brakes/6468908" target="_blank" rel="noopener">Beatport</a>
+        <a href="https://open.spotify.com/album/1n3StqeTf4cG5V61G4RkqT?si=d5BaxNuRRAqA_VfVvBRYRg" target="_blank" rel="noopener">Spotify</a>
+        <a href="https://on.soundcloud.com/79c0ePql4gfK3N8BB0" target="_blank" rel="noopener">SoundCloud</a>
+        <a href="https://music.apple.com/us/album/all-gas-no-brakes/1885770978?at=1000lHKX&ct=linktree_http&itscg=30200&itsct=lt_m" target="_blank" rel="noopener">Apple Music</a>
+      </div>
+    </div>
+    <div class="release-card">
+      <div class="release-art" data-label="images/EXIT002-cover.jpg">
+        <img src="images/EXIT002-cover.jpg" alt="EXIT002 cover art" data-fallback>
+        <span class="release-cat">EXIT002 - JOV3</span>
+      </div>
+      <div class="release-meta">
+        <div class="rel-artist">JOV3 - EXIT002</div>
+        <div class="rel-title">Lost In Sound — EP</div>
+      </div>
+      <div class="release-links">
+        <a href="https://www.beatport.com/release/lost-in-sound/6940984" target="_blank" rel="noopener">Beatport</a>
+        <a href="https://open.spotify.com/album/3nJvC6YB58TQM3eJctc77D?si=4j4QQ1mXRbW4dd0cLCJEXw" target="_blank" rel="noopener">Spotify</a>
+        <a href="https://on.soundcloud.com/DdTCJ0DuQWmULv4YrR" target="_blank" rel="noopener">SoundCloud</a>
+        <a href="https://geo.music.apple.com/us/album/_/6769700138?app=music&at=1000lHKX&ct=linktree_http&itscg=30200&itsct=lt_m&ls=1&mt=1" target="_blank" rel="noopener">Apple Music</a>
+      </div>
+    </div>
+    <div class="release-card">
+      <div class="release-art" data-label="images/EXIT003-cover.jpg">
+        <img src="images/EXIT003-cover.jpg" alt="EXIT003 cover art" data-fallback>
+        <span class="release-cat">EXIT003 - BRAY</span>
+      </div>
+      <div class="release-meta">
+        <div class="rel-artist">BRAY - EXIT003</div>
+        <div class="rel-title">Synth Child — EP</div>
+      </div>
+      <div class="release-links">
+        <a href="https://www.beatport.com/release/synth-child/7126205" target="_blank" rel="noopener">Beatport</a>
+        <a href="https://open.spotify.com/album/2mzyeB8nUIbeQ6G7iLyKfz?si=CcheDbpORiu7bn3vD1ELRQ" target="_blank" rel="noopener">Spotify</a>
+        <a href="https://on.soundcloud.com/YjCdwq0n5U0RYHPDxP" target="_blank" rel="noopener">SoundCloud</a>
+        <a href="https://geo.music.apple.com/us/album/_/6784249101?app=music&at=1000lHKX&ct=linktree_http&itscg=30200&itsct=lt_m&ls=1&mt=1" target="_blank" rel="noopener">Apple Music</a>
+      </div>
+    </div>
+    <div class="release-card">
+      <div class="release-art" data-label="images/EXIT004-cover.jpg">
+        <img src="images/EXIT004-cover.jpg" alt="EXIT004 cover art" data-fallback>
+        <span class="release-cat">EXIT004 - EMIDE BR</span>
+      </div>
+      <div class="release-meta">
+        <div class="rel-artist">EMIDE BR - EXIT004</div>
+        <div class="rel-title">Vendetta — EP</div>
+      </div>
+      <div class="release-links">
+        <a href="https://www.beatport.com/release/vendetta/7227835" target="_blank" rel="noopener">Beatport</a>
+        <a href="https://open.spotify.com/album/1WZPMdvA7nmLLqcDKoUa0p?si=fYhtxjm5R_GbMtazMNOfeA" target="_blank" rel="noopener">Spotify</a>
+        <a href="https://on.soundcloud.com/QlewhWd5xhiaKffixy" target="_blank" rel="noopener">SoundCloud</a>
+        <a href="https://geo.music.apple.com/us/album/_/6792672537?app=music&at=1000lHKX&ct=linktree_http&itscg=30200&itsct=lt_m&ls=1&mt=1" target="_blank" rel="noopener">Apple Music</a>
+      </div>
+    </div>
+    <div class="release-card">
+      <div class="release-art" data-label="images/EXIT005-cover.jpg">
+        <img src="images/EXIT005-cover.jpg" alt="EXIT005 cover art" data-fallback>
+        <span class="release-cat">EXIT005 - VEGA &amp; JONNY (US)</span>
+      </div>
+      <div class="release-meta">
+        <div class="rel-artist">Vega &amp; Jonny (US) - EXIT005</div>
+        <div class="rel-title">We Are Borg — Single</div>
+      </div>
+      <div class="release-links">
+        <a href="https://www.beatport.com/release/we-are-borg-directors-cut/7314641" target="_blank" rel="noopener">Beatport</a>
+        <a href="https://open.spotify.com/track/1H83QPdKt5K46RH2Hz3xZx?si=8c11c93323fa4ad7" target="_blank" rel="noopener">Spotify</a>
+        <a href="https://on.soundcloud.com/HJ3Qvrordkm1b8bptW" target="_blank" rel="noopener">SoundCloud</a>
+        <a href="https://music.apple.com/us/album/we-are-borg-single/6798245535" target="_blank" rel="noopener">Apple Music</a>
+      </div>
+    </div>
+    <div class="release-card">
+      <div class="release-art" data-label="images/EXIT006-cover.jpg">
+        <img src="images/EXIT006-cover.jpg" alt="EXIT006 cover art" data-fallback>
+        <span class="release-cat">EXIT006 - JORDN</span>
+      </div>
+      <div class="release-meta">
+        <div class="rel-artist">Jordn - EXIT006</div>
+        <div class="rel-title">Still Rollin — Single</div>
+      </div>
+    </div>
+
+  </div>
+  <button class="flat-arrow next" aria-label="Next release">&#8250;</button>
+  </div>
+  <div class="trackstack-wrap">
+    <a class="trackstack-btn" href="https://tstack.app/express-lane-records" target="_blank" rel="noopener">Submit your music on trackstack</a>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-head">
+    <h2>About</h2>
+    <span>The imprint</span>
+  </div>
+  <p class="about-text">Express Lane Records was created out of an <b>abundance of passion</b> to share, built because we wanted to contribute to the music we were championing on the dance floor, and our songs needed a home of their own.</p>
+  <p class="about-text">What started as a way to formalize the sounds we loved, and continue to build upon, became a <b>real platform for producers and DJs</b>, founded on a belief in lifting others up the same way we have been. Not a vanity imprint, a <b>launchpad</b>.</p>
+  <p class="about-text">Together with events brand <a href="exit-2c.html">Exit 2C</a>, they're two halves of the same mission: shine a light on <b>local talent</b> and <b>keep the sound moving forward</b>.</p>
+</section>
+
+
+
 <footer>
   <div>&copy; 2026 Express Lane Records</div>
   <div>Miami</div>
 </footer>
 
 <script>
-  // 3D ring carousel: cards arranged in a circle in 3D space, facing outward.
-  // Drag (mouse or touch) to spin, or use the arrow buttons; snaps to the
-  // nearest card. Used for Releases and Roster.
+  // Flat scroll-snap carousel: horizontal swipe/scroll with snap points and
+  // arrow buttons that page by one card width. Used for Releases.
   (function(){
-    function initRing(wrap){
-      var stage = wrap.querySelector('.ring-stage');
-      var track = wrap.querySelector('.ring');
-      var items = Array.prototype.slice.call(track.children);
-      var n = items.length;
-      if (!n) return;
-      var itemW = parseFloat(getComputedStyle(wrap).getPropertyValue('--ring-item-w')) || items[0].getBoundingClientRect().width || 220;
-      var angleStep = 360 / n;
-      var radius = Math.round((itemW / 1.65) / Math.tan(Math.PI / n));
-      items.forEach(function(item, i){
-        var angle = i * angleStep;
-        item.style.transform = 'translate(-50%,-50%) rotateY(' + angle + 'deg) translateZ(' + radius + 'px)';
-      });
-      var rot = 0;
-      function apply(){ track.style.transform = 'rotateY(' + rot + 'deg)'; }
-      var prev = wrap.querySelector('.ring-arrow.prev');
-      var next = wrap.querySelector('.ring-arrow.next');
-      if (prev) prev.addEventListener('click', function(){ track.style.transition = ''; rot += angleStep; apply(); });
-      if (next) next.addEventListener('click', function(){ track.style.transition = ''; rot -= angleStep; apply(); });
-
-      var dragging = false, startX = 0, startRot = 0, moved = false;
-      track.addEventListener('pointerdown', function(e){
-        dragging = true; moved = false; startX = e.clientX; startRot = rot;
-        track.style.transition = 'none';
-        if (track.setPointerCapture) { try { track.setPointerCapture(e.pointerId); } catch(err){} }
-      });
-      track.addEventListener('pointermove', function(e){
-        if (!dragging) return;
-        var dx = e.clientX - startX;
-        if (Math.abs(dx) > 3) moved = true;
-        rot = startRot + dx * 0.35;
-        apply();
-      });
-      function endDrag(){
-        if (!dragging) return;
-        dragging = false;
-        track.style.transition = '';
-        rot = Math.round(rot / angleStep) * angleStep;
-        apply();
+    function initFlat(wrap){
+      var track = wrap.querySelector('.flat-carousel');
+      var prev = wrap.querySelector('.flat-arrow.prev');
+      var next = wrap.querySelector('.flat-arrow.next');
+      function step(){
+        var item = track.firstElementChild;
+        var gap = parseFloat(getComputedStyle(track).gap) || 24;
+        return item ? item.getBoundingClientRect().width + gap : track.clientWidth * 0.8;
       }
-      track.addEventListener('pointerup', endDrag);
-      track.addEventListener('pointerleave', function(){ if (dragging) endDrag(); });
-      // don't let a drag-release also trigger a click on a link inside the item
-      track.addEventListener('click', function(e){
-        if (moved) { e.preventDefault(); e.stopPropagation(); }
-      }, true);
+      if (prev) prev.addEventListener('click', function(){ track.scrollBy({left: -step(), behavior: 'smooth'}); });
+      if (next) next.addEventListener('click', function(){ track.scrollBy({left: step(), behavior: 'smooth'}); });
     }
-    document.querySelectorAll('.ring-carousel').forEach(initRing);
+    document.querySelectorAll('.flat-carousel-wrap').forEach(initFlat);
   })();
 
   // If a gallery image or self-hosted clip file doesn't exist yet, show a

@@ -103,6 +103,7 @@
     max-width:480px;margin:26px auto 0;
     font-size:15px;color:var(--beige);opacity:.7;
   }
+  .hero-desc b{color:var(--gold);font-weight:600;opacity:1;}
   .scroll-hint{
     position:absolute;bottom:38px;left:50%;transform:translateX(-50%);
     font-size:11px;letter-spacing:.2em;text-transform:uppercase;
@@ -218,20 +219,17 @@
   }
   .media-slot.media-missing::after{display:flex;}
 
-  /* shared 3D ring carousel */
-  .ring-carousel{position:relative;padding:6px 54px 22px;}
-  .ring-stage{perspective:1300px;position:relative;height:var(--ring-h,380px);}
-  .ring{
-    position:absolute;inset:0;transform-style:preserve-3d;
-    transition:transform .6s cubic-bezier(.22,.68,0,1);
-    cursor:grab;touch-action:pan-y;
+  /* shared flat scroll-snap carousel */
+  .flat-carousel-wrap{position:relative;padding:6px 54px 6px;}
+  .flat-carousel{
+    display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;padding-bottom:6px;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
   }
-  .ring:active{cursor:grabbing;}
-  .ring-item{
-    position:absolute;top:50%;left:50%;width:var(--ring-item-w,220px);
-    backface-visibility:hidden;-webkit-backface-visibility:hidden;
-  }
-  .ring-arrow{
+  .flat-carousel::-webkit-scrollbar{display:none;}
+  .flat-carousel > *{flex:0 0 auto;scroll-snap-align:start;}
+  .flat-carousel .media-slot{flex:0 0 clamp(190px,32vw,260px);width:auto;height:auto;}
+  .flat-arrow{
     position:absolute;top:50%;transform:translateY(-50%);
     width:40px;height:40px;border-radius:999px;border:none;
     background:rgba(11,11,10,.72);border:1px solid rgba(239,232,216,.25);
@@ -239,13 +237,18 @@
     display:flex;align-items:center;justify-content:center;
     transition:background .2s,border-color .2s;z-index:5;
   }
-  .ring-arrow:hover{background:rgba(11,11,10,.92);border-color:var(--gold);}
-  .ring-arrow.prev{left:0;}
-  .ring-arrow.next{right:0;}
+  .flat-arrow:hover{background:rgba(11,11,10,.92);border-color:var(--gold);}
+  .flat-arrow.prev{left:0;}
+  .flat-arrow.next{right:0;}
   @media (max-width:820px){
-    .ring-arrow{display:none;}
-    .ring-carousel{padding:6px 6px 18px;}
+    .flat-arrow{display:none;}
+    .flat-carousel-wrap{padding:6px 0;}
   }
+
+  /* shared 3-column grid */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  @media (max-width:820px){.grid-3{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:480px){.grid-3{grid-template-columns:1fr;}}
 
   /* media: embedded video */
   .video-grid{
@@ -304,10 +307,10 @@
   <a href="#" class="wordmark"><img class="wordmark-logo" src="images/logo-e2c-trans.png" alt="Exit 2C"></a>
   <div class="header-right">
     <nav>
-      <a href="#gallery">Gallery</a>
-      <a href="#roster">DJs</a>
       <a href="#about">About</a>
       <a href="#tickets">Tickets</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#roster">DJs</a>
       <a href="#connect">Connect</a>
     </nav>
     <a class="brand-btn" href="index.html">Express Lane Records</a>
@@ -320,137 +323,9 @@
   </div>
   <div class="hero-inner">
     <img class="hero-logo" src="images/logo-e2c-trans.png" alt="Exit 2C">
-    <p class="hero-desc">Your last exit before the party.</p>
+    <p class="hero-desc"><b>Your last exit before the party.</b></p>
   </div>
   <div class="scroll-hint">Scroll</div>
-</section>
-
-<section id="gallery">
-  <div class="section-head">
-    <h2>Gallery</h2>
-    <span>Photos &amp; video</span>
-  </div>
-
-  <div class="ring-carousel" style="--ring-h:300px;--ring-item-w:clamp(130px,22vw,190px);">
-  <button class="ring-arrow prev" aria-label="Previous photo">&#8249;</button>
-  <div class="ring-stage"><div class="ring">
-    <div class="ring-item"><div class="media-slot" data-label="images/crowd-1.jpg"><img src="images/crowd-1.jpg" alt="Exit 2C crowd 1" data-fallback></div></div>
-    <div class="ring-item"><div class="media-slot" data-label="images/crowd-2.jpg"><img src="images/crowd-2.jpg" alt="Exit 2C crowd 2" data-fallback></div></div>
-    <div class="ring-item"><div class="media-slot" data-label="images/crowd-3.jpg"><img src="images/crowd-3.jpg" alt="Exit 2C crowd 3" data-fallback></div></div>
-    <div class="ring-item"><div class="media-slot" data-label="images/crowd-4.jpg"><img src="images/crowd-4.jpg" alt="Exit 2C crowd 4" data-fallback></div></div>
-    <div class="ring-item"><div class="media-slot" data-label="images/crowd-5.jpg"><img src="images/crowd-5.jpg" alt="Exit 2C crowd 5" data-fallback></div></div>
-    <div class="ring-item"><div class="media-slot" data-label="images/crowd-6.jpg"><img src="images/crowd-6.jpg" alt="Exit 2C crowd 6" data-fallback></div></div>
-    <div class="ring-item"><div class="media-slot" data-label="images/crowd-7.jpg"><img src="images/crowd-7.jpg" alt="Exit 2C crowd 7" data-fallback></div></div>
-    <div class="ring-item"><div class="media-slot" data-label="images/crowd-8.jpg"><img src="images/crowd-8.jpg" alt="Exit 2C crowd 8" data-fallback></div></div>
-  </div></div>
-  <button class="ring-arrow next" aria-label="Next photo">&#8250;</button>
-  </div>
-
-  <div class="clip-grid">
-    <div class="clip-slot" data-label="videos/recap-euphoric2c.mp4">
-      <video controls preload="metadata" poster="images/recap-euphoric2c-poster.jpg" data-fallback>
-        <source src="videos/recap-euphoric2c.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="clip-slot" data-label="videos/recap-mmw.mp4">
-      <video controls preload="metadata" poster="images/recap-mmw-poster.jpg" data-fallback>
-        <source src="videos/recap-mmw.mp4" type="video/mp4">
-      </video>
-    </div>
-  </div>
-</section>
-
-<section id="roster">
-  <div class="section-head">
-    <h2>DJs</h2>
-    <span>Who's played Exit 2C</span>
-  </div>
-  <div class="ring-carousel" style="--ring-h:260px;--ring-item-w:clamp(140px,20vw,190px);">
-  <button class="ring-arrow prev" aria-label="Previous DJ">&#8249;</button>
-  <div class="ring-stage"><div class="ring">
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-merch.jpg"><img src="images/id-merch.jpg" alt="M3RCH" data-fallback></div>
-      <div class="artist-name">M3RCH</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-vega.jpg"><img src="images/id-vega.jpg" alt="Vega" data-fallback></div>
-      <div class="artist-name">Vega</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-marco.jpg"><img src="images/id-marco.jpg" alt="Marco Consonni" data-fallback></div>
-      <div class="artist-name">Marco Consonni</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-lance.jpg"><img src="images/id-lance.jpg" alt="LANCE REGO" data-fallback></div>
-      <div class="artist-name">LANCE REGO</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-guskoza.jpg"><img src="images/id-guskoza.jpg" alt="Gus Koza" data-fallback></div>
-      <div class="artist-name">Gus Koza</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-colin.jpg"><img src="images/id-colin.jpg" alt="Colin Push" data-fallback></div>
-      <div class="artist-name">Colin Push</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-jov3-2c.jpg"><img src="images/id-jov3-2c.jpg" alt="JOV3" data-fallback></div>
-      <div class="artist-name">JOV3</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-smalls.jpg"><img src="images/id-smalls.jpg" alt="SMALLS" data-fallback></div>
-      <div class="artist-name">SMALLS</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-da$on.jpg"><img src="images/id-da$on.jpg" alt="DA$ON" data-fallback></div>
-      <div class="artist-name">DA$ON</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-edgy.jpg"><img src="images/id-edgy.jpg" alt="TheRealEdgy" data-fallback></div>
-      <div class="artist-name">TheRealEdgy</div>
-    </div></div>
-
-    <div class="ring-item"><div class="artist-card">
-      <div class="artist-photo" data-label="images/id-sb.jpg"><img src="images/id-sb.jpg" alt="SERON &amp; Body" data-fallback></div>
-      <div class="artist-name">SERON &amp; Body</div>
-    </div></div>
-
-  </div></div>
-  <button class="ring-arrow next" aria-label="Next DJ">&#8250;</button>
-  </div>
-
-</section>
-
-<section id="about">
-  <div class="section-head">
-    <h2>About</h2>
-    <span>The brand</span>
-  </div>
-  <p class="about-text">Exit 2C was born from the underground dance floors of Miami, named after the real exit that takes you to Miami Ave, downtown. The spot where some of the city's <b>rawest, most electric nights</b> take shape.</p>
-  <p class="about-text">First formed on Twitter as a method to break the ice within the existing house music scene, Exit 2C <b>grew into a community</b>. Friends of friends meeting and pursuing relationships outside of the entity which brought them together.</p>
-  <p class="about-text">What started as a group of friends chasing self expression grew into a place where people feel welcome and <b>build real connection</b> &mdash; a home for the sound we love.</p>
-  <p class="about-text">Today, Exit 2C is our events brand: the parties, the nights out, the dance floors where Miami's underground scene comes alive. Our music lives under <a href="index.html">Express Lane Records</a>, the label side of what we do where we release tracks from the artists we believe in. Together, they're two halves of the same mission: <b>give upcoming producers and DJs a real platform</b>, and keep the sound moving forward.</p>
-  <p class="about-text">We're not trying to be the best. We're building <b>genuine community</b> for the artists still on their way up, and for the people who show up every time just to move. If you've never been, welcome to Exit 2C. Your last exit before the party.</p>
-</section>
-
-<section id="tickets">
-  <div class="section-head">
-    <h2>Tickets</h2>
-    <span>Get in the room</span>
-  </div>
-  <div class="tickets-inner">
-    <p class="tickets-text">All Exit 2C events are ticketed through Shotgun — find upcoming dates and grab tickets there.</p>
-    <a class="ticket-btn" href="https://shotgun.live/en/venues/exit2c" target="_blank" rel="noopener">Get Tickets on Shotgun</a>
-  </div>
 </section>
 
 <section id="connect">
@@ -470,62 +345,144 @@
   </div>
 </section>
 
+<section id="roster">
+  <div class="section-head">
+    <h2>DJs</h2>
+    <span>Who's played Exit 2C</span>
+  </div>
+  <div class="grid-3">
+
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-merch.jpg"><img src="images/id-merch.jpg" alt="M3RCH" data-fallback></div>
+      <div class="artist-name">M3RCH</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-vega.jpg"><img src="images/id-vega.jpg" alt="Vega" data-fallback></div>
+      <div class="artist-name">Vega</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-marco.jpg"><img src="images/id-marco.jpg" alt="Marco Consonni" data-fallback></div>
+      <div class="artist-name">Marco Consonni</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-lance.jpg"><img src="images/id-lance.jpg" alt="LANCE REGO" data-fallback></div>
+      <div class="artist-name">LANCE REGO</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-guskoza.jpg"><img src="images/id-guskoza.jpg" alt="Gus Koza" data-fallback></div>
+      <div class="artist-name">Gus Koza</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-colin.jpg"><img src="images/id-colin.jpg" alt="Colin Push" data-fallback></div>
+      <div class="artist-name">Colin Push</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-jov3-2c.jpg"><img src="images/id-jov3-2c.jpg" alt="JOV3" data-fallback></div>
+      <div class="artist-name">JOV3</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-smalls.jpg"><img src="images/id-smalls.jpg" alt="SMALLS" data-fallback></div>
+      <div class="artist-name">SMALLS</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-da$on.jpg"><img src="images/id-da$on.jpg" alt="DA$ON" data-fallback></div>
+      <div class="artist-name">DA$ON</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-edgy.jpg"><img src="images/id-edgy.jpg" alt="TheRealEdgy" data-fallback></div>
+      <div class="artist-name">TheRealEdgy</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-sb.jpg"><img src="images/id-sb.jpg" alt="SERON &amp; Body" data-fallback></div>
+      <div class="artist-name">SERON &amp; Body</div>
+    </div>
+
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="section-head">
+    <h2>Gallery</h2>
+    <span>Photos &amp; video</span>
+  </div>
+
+  <div class="flat-carousel-wrap">
+  <button class="flat-arrow prev" aria-label="Previous photo">&#8249;</button>
+  <div class="flat-carousel">
+    <div class="media-slot" data-label="images/crowd-1.jpg"><img src="images/crowd-1.jpg" alt="Exit 2C crowd 1" data-fallback></div>
+    <div class="media-slot" data-label="images/crowd-2.jpg"><img src="images/crowd-2.jpg" alt="Exit 2C crowd 2" data-fallback></div>
+    <div class="media-slot" data-label="images/crowd-3.jpg"><img src="images/crowd-3.jpg" alt="Exit 2C crowd 3" data-fallback></div>
+    <div class="media-slot" data-label="images/crowd-4.jpg"><img src="images/crowd-4.jpg" alt="Exit 2C crowd 4" data-fallback></div>
+    <div class="media-slot" data-label="images/crowd-5.jpg"><img src="images/crowd-5.jpg" alt="Exit 2C crowd 5" data-fallback></div>
+    <div class="media-slot" data-label="images/crowd-6.jpg"><img src="images/crowd-6.jpg" alt="Exit 2C crowd 6" data-fallback></div>
+    <div class="media-slot" data-label="images/crowd-7.jpg"><img src="images/crowd-7.jpg" alt="Exit 2C crowd 7" data-fallback></div>
+    <div class="media-slot" data-label="images/crowd-8.jpg"><img src="images/crowd-8.jpg" alt="Exit 2C crowd 8" data-fallback></div>
+  </div>
+  <button class="flat-arrow next" aria-label="Next photo">&#8250;</button>
+  </div>
+
+  <div class="clip-grid">
+    <div class="clip-slot" data-label="videos/recap-euphoric2c.mp4">
+      <video controls preload="metadata" poster="images/recap-euphoric2c-poster.jpg" data-fallback>
+        <source src="videos/recap-euphoric2c.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="clip-slot" data-label="videos/recap-mmw.mp4">
+      <video controls preload="metadata" poster="images/recap-mmw-poster.jpg" data-fallback>
+        <source src="videos/recap-mmw.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<section id="tickets">
+  <div class="section-head">
+    <h2>Tickets</h2>
+    <span>Get in the room</span>
+  </div>
+  <div class="tickets-inner">
+    <p class="tickets-text">All Exit 2C events are ticketed through Shotgun — find upcoming dates and grab tickets there.</p>
+    <a class="ticket-btn" href="https://shotgun.live/en/venues/exit2c" target="_blank" rel="noopener">Get Tickets on Shotgun</a>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-head">
+    <h2>About</h2>
+    <span>The brand</span>
+  </div>
+  <p class="about-text">Exit 2C was born from the underground dance floors of Miami, named after the real exit that takes you to Miami Ave, downtown. The spot where some of the city's <b>rawest, most electric nights</b> take shape.</p>
+  <p class="about-text">First formed on Twitter as a method to break the ice within the existing house music scene, Exit 2C <b>grew into a community</b>. Friends of friends meeting and pursuing relationships outside of the entity which brought them together.</p>
+  <p class="about-text">What started as a group of friends chasing self expression grew into a place where people feel welcome and <b>build real connection</b> &mdash; a home for the sound we love.</p>
+  <p class="about-text">Today, Exit 2C is our events brand: the parties, the nights out, the dance floors where Miami's underground scene comes alive. Our music lives under <a href="index.html">Express Lane Records</a>, the label side of what we do where we release tracks from the artists we believe in. Together, they're two halves of the same mission: <b>give upcoming producers and DJs a real platform</b>, and keep the sound moving forward.</p>
+  <p class="about-text">We're not trying to be the best. We're building <b>genuine community</b> for the artists still on their way up, and for the people who show up every time just to move. If you've never been, welcome to Exit 2C. <b>Your last exit before the party.</b></p>
+</section>
+
+
+
+
 <footer>
   <div>&copy; 2026 Exit 2C</div>
   <div>Miami</div>
 </footer>
 
 <script>
-  // 3D ring carousel: cards arranged in a circle in 3D space, facing outward.
-  // Drag (mouse or touch) to spin, or use the arrow buttons; snaps to the
-  // nearest card. Used for Gallery photos and the DJ roster.
+  // Flat scroll-snap carousel: horizontal swipe/scroll with snap points and
+  // arrow buttons that page by one card width. Used for Gallery photos.
   (function(){
-    function initRing(wrap){
-      var track = wrap.querySelector('.ring');
-      var items = Array.prototype.slice.call(track.children);
-      var n = items.length;
-      if (!n) return;
-      var itemW = parseFloat(getComputedStyle(wrap).getPropertyValue('--ring-item-w')) || items[0].getBoundingClientRect().width || 220;
-      var angleStep = 360 / n;
-      var radius = Math.round((itemW / 1.65) / Math.tan(Math.PI / n));
-      items.forEach(function(item, i){
-        var angle = i * angleStep;
-        item.style.transform = 'translate(-50%,-50%) rotateY(' + angle + 'deg) translateZ(' + radius + 'px)';
-      });
-      var rot = 0;
-      function apply(){ track.style.transform = 'rotateY(' + rot + 'deg)'; }
-      var prev = wrap.querySelector('.ring-arrow.prev');
-      var next = wrap.querySelector('.ring-arrow.next');
-      if (prev) prev.addEventListener('click', function(){ track.style.transition = ''; rot += angleStep; apply(); });
-      if (next) next.addEventListener('click', function(){ track.style.transition = ''; rot -= angleStep; apply(); });
-
-      var dragging = false, startX = 0, startRot = 0, moved = false;
-      track.addEventListener('pointerdown', function(e){
-        dragging = true; moved = false; startX = e.clientX; startRot = rot;
-        track.style.transition = 'none';
-        if (track.setPointerCapture) { try { track.setPointerCapture(e.pointerId); } catch(err){} }
-      });
-      track.addEventListener('pointermove', function(e){
-        if (!dragging) return;
-        var dx = e.clientX - startX;
-        if (Math.abs(dx) > 3) moved = true;
-        rot = startRot + dx * 0.35;
-        apply();
-      });
-      function endDrag(){
-        if (!dragging) return;
-        dragging = false;
-        track.style.transition = '';
-        rot = Math.round(rot / angleStep) * angleStep;
-        apply();
+    function initFlat(wrap){
+      var track = wrap.querySelector('.flat-carousel');
+      var prev = wrap.querySelector('.flat-arrow.prev');
+      var next = wrap.querySelector('.flat-arrow.next');
+      function step(){
+        var item = track.firstElementChild;
+        var gap = parseFloat(getComputedStyle(track).gap) || 20;
+        return item ? item.getBoundingClientRect().width + gap : track.clientWidth * 0.8;
       }
-      track.addEventListener('pointerup', endDrag);
-      track.addEventListener('pointerleave', function(){ if (dragging) endDrag(); });
-      track.addEventListener('click', function(e){
-        if (moved) { e.preventDefault(); e.stopPropagation(); }
-      }, true);
+      if (prev) prev.addEventListener('click', function(){ track.scrollBy({left: -step(), behavior: 'smooth'}); });
+      if (next) next.addEventListener('click', function(){ track.scrollBy({left: step(), behavior: 'smooth'}); });
     }
-    document.querySelectorAll('.ring-carousel').forEach(initRing);
+    document.querySelectorAll('.flat-carousel-wrap').forEach(initFlat);
   })();
 
   document.querySelectorAll('img[data-fallback]').forEach(function(img){
