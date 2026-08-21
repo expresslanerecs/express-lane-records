@@ -253,8 +253,23 @@
   .clip-slot.media-missing::after{display:flex;}
 
   @media (max-width:640px){
-    nav{gap:16px;}
+    header{flex-wrap:wrap;row-gap:14px;padding:16px 5vw;}
+    .wordmark-logo{height:40px;}
+    .header-right{gap:16px;}
+    nav{gap:14px;}
+    nav a{font-size:11px;}
+    .brand-btn{padding:7px 14px;font-size:10px;}
     section{padding:80px 6vw;}
+    .hero-desc{font-size:14px;}
+    .roster-grid{gap:24px;}
+    .gallery-grid{gap:10px;}
+    .clip-grid{gap:18px;}
+    .tickets-inner{gap:20px;}
+    .ticket-btn{width:100%;text-align:center;}
+  }
+  @media (max-width:400px){
+    .wordmark-logo{height:34px;}
+    .roster-grid{grid-template-columns:1fr;}
   }
 </style>
 </head>
@@ -433,11 +448,26 @@
       var slot = vid.closest('.clip-slot');
       if (slot) slot.classList.add('media-missing');
     }
-    vid.addEventListener('loadedmetadata', function(){ settled = true; });
+    function markFound(){ settled = true; }
+    vid.addEventListener('loadedmetadata', markFound);
+    vid.addEventListener('progress', markFound);
     vid.addEventListener('error', markMissing);
-    setTimeout(function(){
-      if (!settled && vid.readyState === 0) markMissing();
-    }, 1200);
+    // Backstop for browsers that don't fire a catchable "error" event for a
+    // missing video source. Mobile connections can take several seconds just
+    // to start fetching metadata, so give it real room -- and if the browser
+    // is still actively trying (networkState 2 = NETWORK_LOADING), keep
+    // waiting instead of giving up. A flat 1.2s timeout was hiding perfectly
+    // valid videos before they'd had a chance to load on mobile.
+    function checkStalled(triesLeft){
+      if (settled) return;
+      if (vid.readyState > 0) { settled = true; return; }
+      if (vid.networkState === 2 && triesLeft > 0){
+        setTimeout(function(){ checkStalled(triesLeft - 1); }, 4000);
+        return;
+      }
+      markMissing();
+    }
+    setTimeout(function(){ checkStalled(4); }, 4000);
   });
 </script>
 
