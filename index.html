@@ -144,6 +144,7 @@
     width:100%;
   }
   .flat-carousel .release-card{flex:0 0 clamp(220px,28vw,280px);width:auto;}
+  .flat-carousel .artist-card{flex:0 0 clamp(220px,28vw,280px);width:auto;}
   .trackstack-wrap{margin-top:48px;text-align:center;}
   .trackstack-btn{
     display:inline-block;
@@ -214,10 +215,6 @@
     .flat-carousel-wrap{padding:6px 0;}
   }
 
-  /* shared 3-column grid */
-  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-  @media (max-width:820px){.grid-3{grid-template-columns:repeat(2,1fr);}}
-  @media (max-width:480px){.grid-3{grid-template-columns:1fr;}}
 
   /* roster */
   .artist-card{
@@ -376,94 +373,14 @@
   <div class="scroll-hint">Scroll</div>
 </section>
 
-<section id="connect">
+<section id="about">
   <div class="section-head">
-    <h2>Connect</h2>
-    <span>Follow &amp; reach out</span>
+    <h2>About</h2>
+    <span>The imprint</span>
   </div>
-  <div class="connect-inner">
-    <div class="connect-links">
-      <a href="https://instagram.com/expresslanerecs" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://soundcloud.com/express-lane-records" target="_blank" rel="noopener">SoundCloud</a>
-      <a href="https://www.beatport.com/label/express-lane-records/369996" target="_blank" rel="noopener">Beatport</a>
-      <a href="https://open.spotify.com/user/31wj7hnfpemffjcaaqs2ljvji5m4?si=e39da438af074ef9" target="_blank" rel="noopener">Spotify</a>
-      <a href="https://music.apple.com/profile/expresslanerecords" target="_blank" rel="noopener">Apple Music</a>
-    </div>
-    <div class="connect-links">
-      <span class="connect-email">expresslanerecs@gmail.com</span>
-    </div>
-  </div>
-</section>
-
-<section id="roster">
-  <div class="section-head">
-    <h2>Roster</h2>
-    <span>Artists &amp; producers</span>
-  </div>
-  <div class="grid-3">
-
-    <div class="artist-card">
-      <div class="artist-photo" data-label="images/id-gustav.jpg"><img src="images/id-gustav.jpg" alt="Gustav (BR)" data-fallback></div>
-      <div class="artist-name">Gustav (BR)</div>
-      <div class="artist-location">Santa Catarina, Brasil</div>
-    </div>
-    <div class="artist-card">
-      <div class="artist-photo" data-label="images/id-colin.jpg"><img src="images/id-colin.jpg" alt="Colin Push" data-fallback></div>
-      <div class="artist-name">Colin Push</div>
-      <div class="artist-location">Chicago, IL, USA</div>
-    </div>
-    <div class="artist-card">
-      <div class="artist-photo" data-label="images/id-vega.jpg"><img src="images/id-vega.jpg" alt="Vega" data-fallback></div>
-      <div class="artist-name">Vega</div>
-      <div class="artist-location">Miami, FL, USA</div>
-    </div>
-    <div class="artist-card">
-      <div class="artist-photo" data-label="images/id-guskoza.jpg"><img src="images/id-guskoza.jpg" alt="Gus Koza" data-fallback></div>
-      <div class="artist-name">Gus Koza</div>
-      <div class="artist-location">Detroit, MI, USA</div>
-    </div>
-    <div class="artist-card">
-      <div class="artist-photo" data-label="images/id-soar.jpg"><img src="images/id-soar.jpg" alt="SOAR" data-fallback></div>
-      <div class="artist-name">SOAR</div>
-      <div class="artist-location">Houston, TX, USA</div>
-    </div>
-    <div class="artist-card">
-      <div class="artist-photo" data-label="images/id-lance.jpg"><img src="images/id-lance.jpg" alt="LANCE REGO" data-fallback></div>
-      <div class="artist-name">LANCE REGO</div>
-      <div class="artist-location">Boston, MA, USA</div>
-    </div>
-    <div class="artist-card">
-      <div class="artist-photo" data-label="images/id-duko.jpg"><img src="images/id-duko.jpg" alt="DUKO (US)" data-fallback></div>
-      <div class="artist-name">DUKO (US)</div>
-      <div class="artist-location">Fort Lauderdale, FL, USA</div>
-    </div>
-    <div class="artist-card">
-      <div class="artist-photo" data-label="images/id-jonny.jpg"><img src="images/id-jonny.jpg" alt="Jonny (US)" data-fallback></div>
-      <div class="artist-name">Jonny (US)</div>
-      <div class="artist-location">Miami, FL, USA</div>
-    </div>
-    <div class="artist-card">
-      <div class="artist-photo" data-label="images/id-jov3.jpg"><img src="images/id-jov3.jpg" alt="JOV3" data-fallback></div>
-      <div class="artist-name">JOV3</div>
-      <div class="artist-location">Miami, FL, USA</div>
-    </div>
-    <div class="artist-card">
-      <div class="artist-photo" data-label="images/id-bray.jpg"><img src="images/id-bray.jpg" alt="BRAY" data-fallback></div>
-      <div class="artist-name">BRAY</div>
-      <div class="artist-location">Phoenix, AZ, USA</div>
-    </div>
-    <div class="artist-card">
-      <div class="artist-photo" data-label="images/id-emide.jpg"><img src="images/id-emide.jpg" alt="EMIDE BR" data-fallback></div>
-      <div class="artist-name">EMIDE BR</div>
-      <div class="artist-location">Santa Catarina, Brasil</div>
-    </div>
-    <div class="artist-card">
-      <div class="artist-photo" data-label="images/id-jordn.jpg"><img src="images/id-jordn.jpg" alt="Jordn" data-fallback></div>
-      <div class="artist-name">Jordn</div>
-      <div class="artist-location">Austin, TX, USA</div>
-    </div>
-
-  </div>
+  <p class="about-text">Express Lane Records was created out of an <b>abundance of passion</b> to share, built because we wanted to contribute to the music we were championing on the dance floor, and our songs needed a home of their own.</p>
+  <p class="about-text">What started as a way to formalize the sounds we loved, and continue to build upon, became a <b>real platform for producers and DJs</b>, founded on a belief in lifting others up the same way we have been. Not a vanity imprint, a <b>launchpad</b>.</p>
+  <p class="about-text">Together with events brand <a href="exit-2c.html">Exit 2C</a>, they're two halves of the same mission: shine a light on <b>local talent</b> and <b>keep the sound moving forward</b>.</p>
 </section>
 
 <section id="releases">
@@ -574,14 +491,98 @@
   </div>
 </section>
 
-<section id="about">
+<section id="roster">
   <div class="section-head">
-    <h2>About</h2>
-    <span>The imprint</span>
+    <h2>Roster</h2>
+    <span>Artists &amp; producers</span>
   </div>
-  <p class="about-text">Express Lane Records was created out of an <b>abundance of passion</b> to share, built because we wanted to contribute to the music we were championing on the dance floor, and our songs needed a home of their own.</p>
-  <p class="about-text">What started as a way to formalize the sounds we loved, and continue to build upon, became a <b>real platform for producers and DJs</b>, founded on a belief in lifting others up the same way we have been. Not a vanity imprint, a <b>launchpad</b>.</p>
-  <p class="about-text">Together with events brand <a href="exit-2c.html">Exit 2C</a>, they're two halves of the same mission: shine a light on <b>local talent</b> and <b>keep the sound moving forward</b>.</p>
+  <div class="flat-carousel-wrap">
+  <button class="flat-arrow prev" aria-label="Previous artist">&#8249;</button>
+  <div class="flat-carousel">
+
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-gustav.jpg"><img src="images/id-gustav.jpg" alt="Gustav (BR)" data-fallback></div>
+      <div class="artist-name">Gustav (BR)</div>
+      <div class="artist-location">Santa Catarina, Brasil</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-colin.jpg"><img src="images/id-colin.jpg" alt="Colin Push" data-fallback></div>
+      <div class="artist-name">Colin Push</div>
+      <div class="artist-location">Chicago, IL, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-vega.jpg"><img src="images/id-vega.jpg" alt="Vega" data-fallback></div>
+      <div class="artist-name">Vega</div>
+      <div class="artist-location">Miami, FL, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-guskoza.jpg"><img src="images/id-guskoza.jpg" alt="Gus Koza" data-fallback></div>
+      <div class="artist-name">Gus Koza</div>
+      <div class="artist-location">Detroit, MI, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-soar.jpg"><img src="images/id-soar.jpg" alt="SOAR" data-fallback></div>
+      <div class="artist-name">SOAR</div>
+      <div class="artist-location">Houston, TX, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-lance.jpg"><img src="images/id-lance.jpg" alt="LANCE REGO" data-fallback></div>
+      <div class="artist-name">LANCE REGO</div>
+      <div class="artist-location">Boston, MA, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-duko.jpg"><img src="images/id-duko.jpg" alt="DUKO (US)" data-fallback></div>
+      <div class="artist-name">DUKO (US)</div>
+      <div class="artist-location">Fort Lauderdale, FL, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-jonny.jpg"><img src="images/id-jonny.jpg" alt="Jonny (US)" data-fallback></div>
+      <div class="artist-name">Jonny (US)</div>
+      <div class="artist-location">Miami, FL, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-jov3.jpg"><img src="images/id-jov3.jpg" alt="JOV3" data-fallback></div>
+      <div class="artist-name">JOV3</div>
+      <div class="artist-location">Miami, FL, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-bray.jpg"><img src="images/id-bray.jpg" alt="BRAY" data-fallback></div>
+      <div class="artist-name">BRAY</div>
+      <div class="artist-location">Phoenix, AZ, USA</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-emide.jpg"><img src="images/id-emide.jpg" alt="EMIDE BR" data-fallback></div>
+      <div class="artist-name">EMIDE BR</div>
+      <div class="artist-location">Santa Catarina, Brasil</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-photo" data-label="images/id-jordn.jpg"><img src="images/id-jordn.jpg" alt="Jordn" data-fallback></div>
+      <div class="artist-name">Jordn</div>
+      <div class="artist-location">Austin, TX, USA</div>
+    </div>
+
+  </div>
+  <button class="flat-arrow next" aria-label="Next artist">&#8250;</button>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="section-head">
+    <h2>Connect</h2>
+    <span>Follow &amp; reach out</span>
+  </div>
+  <div class="connect-inner">
+    <div class="connect-links">
+      <a href="https://instagram.com/expresslanerecs" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://soundcloud.com/express-lane-records" target="_blank" rel="noopener">SoundCloud</a>
+      <a href="https://www.beatport.com/label/express-lane-records/369996" target="_blank" rel="noopener">Beatport</a>
+      <a href="https://open.spotify.com/user/31wj7hnfpemffjcaaqs2ljvji5m4?si=e39da438af074ef9" target="_blank" rel="noopener">Spotify</a>
+      <a href="https://music.apple.com/profile/expresslanerecords" target="_blank" rel="noopener">Apple Music</a>
+    </div>
+    <div class="connect-links">
+      <span class="connect-email">expresslanerecs@gmail.com</span>
+    </div>
+  </div>
 </section>
 
 
@@ -593,7 +594,7 @@
 
 <script>
   // Flat scroll-snap carousel: horizontal swipe/scroll with snap points and
-  // arrow buttons that page by one card width. Used for Releases.
+  // arrow buttons that page by one card width. Used for Releases and Roster.
   (function(){
     function initFlat(wrap){
       var track = wrap.querySelector('.flat-carousel');
