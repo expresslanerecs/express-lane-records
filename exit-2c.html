@@ -197,10 +197,6 @@
     letter-spacing:.05em;
   }
 
-  .placeholder-note{
-    display:inline-block;margin-top:10px;font-size:11px;color:var(--beige);
-    opacity:.4;font-style:italic;
-  }
 
   /* media: gallery photos */
   .gallery-grid{
@@ -255,14 +251,15 @@
   @media (max-width:640px){
     header{flex-wrap:wrap;row-gap:14px;padding:16px 5vw;}
     .wordmark-logo{height:40px;}
-    .header-right{gap:16px;}
-    nav{gap:14px;}
+    header{flex-direction:column;align-items:center;text-align:center;}
+    .header-right{flex-direction:column;gap:14px;}
+    nav{justify-content:center;gap:14px;}
     nav a{font-size:11px;}
     .brand-btn{padding:7px 14px;font-size:10px;}
     section{padding:80px 6vw;}
     .hero-desc{font-size:14px;}
     .roster-grid{gap:24px;}
-    .gallery-grid{gap:10px;}
+    .gallery-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
     .clip-grid{gap:18px;}
     .tickets-inner{gap:20px;}
     .ticket-btn{width:100%;text-align:center;}
@@ -331,7 +328,6 @@
       </video>
     </div>
   </div>
-  <div class="placeholder-note">Self-hosted recap clips — drop compressed mp4 files named videos/recap-euphoric2c.mp4 and videos/recap-mmw.mp4 in and they play directly, with playback controls, right on the page.</div>
 </section>
 
 <section id="roster">
@@ -385,7 +381,6 @@
       <div class="artist-name">SERON &amp; Body</div>
     </div>
   </div>
-  <div class="placeholder-note">Photos load from the filenames above — drop matching files into the /images folder and each tile fills in automatically.</div>
 </section>
 
 <section id="about">
